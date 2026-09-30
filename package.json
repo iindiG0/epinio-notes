@@ -1,0 +1,15 @@
+{
+  "name": "epinio-notes",
+  "version": "1.0.0",
+  "description": "Tiny notes app to test deploying plain source code on Epinio (no Dockerfile)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
