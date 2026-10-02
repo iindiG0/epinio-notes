@@ -1,0 +1,25 @@
+# cnpg-db.yaml
+# A small PostgreSQL database for epinio-notes, managed by CloudNativePG.
+# Created by the platform admin (not by Epinio), in the client's namespace.
+#
+#   kubectl apply -f cnpg-db.yaml
+#
+# CNPG then creates automatically:
+#   Service  epinio-notes-db-rw   -> address the app connects to
+#   Secret   epinio-notes-db-app  -> user, password and a ready-made "uri"
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: epinio-notes-db
+  namespace: client-a
+spec:
+  instances: 1            # 3 for real production (automatic failover)
+  storage:
+    size: 1Gi             # uses the default StorageClass (nfs-csi / TrueNAS)
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits:   { memory: 256Mi }
+  bootstrap:
+    initdb:
+      database: app
+      owner: app

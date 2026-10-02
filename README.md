@@ -1,6 +1,6 @@
 # Epinio Notes
 
-A tiny notes web app (Node.js + Express) for testing deployment on **Epinio from plain source code**:
+A small CRUD notes web app (Node.js + Express + PostgreSQL) for testing deployment on **Epinio from plain source code**:
 no Dockerfile, no CI pipeline.
 
 ## How Epinio deploys it
@@ -17,11 +17,16 @@ The app listens on the port in the `PORT` environment variable (Epinio sets it, 
 | Name | Default | What it does |
 |---|---|---|
 | `APP_TITLE` | `Epinio Notes` | Title shown on the page |
+| `DATABASE_URL` | *(empty)* | PostgreSQL connection string. Empty = notes kept in memory only |
 
 ## Notes
 
-- Notes are stored **in memory**: they disappear when the app restarts or is rebuilt,
-  and with more than 1 instance each pod has its own list. A database is the next step.
+- Features: create, list, edit and delete notes (full CRUD).
+- With `DATABASE_URL` set, notes are stored in PostgreSQL and survive restarts and rebuilds.
+  The app creates its `notes` table by itself on first start.
+- Without `DATABASE_URL`, notes are kept **in memory** (lost on restart). The page shows which
+  storage is in use.
+- `cnpg-db.yaml` creates the database with CloudNativePG (applied by the admin with kubectl).
 - The page shows which pod served the request, handy for testing scaling.
 
 ## Run locally
